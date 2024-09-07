@@ -2,22 +2,28 @@ import sys
 
 from PyQt6 import uic
 from PyQt6.QtWidgets import QWidget, QApplication, QPushButton
-from PyQt6.QtCore import Qt, QPropertyAnimation, QRect, QEasingCurve, QParallelAnimationGroup, QTimer
+from PyQt6.QtCore import (
+    Qt,
+    QPropertyAnimation,
+    QRect,
+    QEasingCurve,
+    QParallelAnimationGroup,
+    QTimer,
+)
 from playsound import playsound
 from qfluentwidgets import setThemeColor
-from win32 import win32api
 from loguru import logger
 
 import conf
 import list
 
-attend_class = 'audio/attend_class.wav'
-finish_class = 'audio/finish_class.wav'
+attend_class = "audio/attend_class.wav"
+finish_class = "audio/finish_class.wav"
 
-attend_class_p_color = '#ff8800'
-finish_class_p_color = '#5ADFAA'
+attend_class_p_color = "#ff8800"
+finish_class_p_color = "#5ADFAA"
 
-window_list = []    # 窗口列表
+window_list = []  # 窗口列表
 
 
 # 重写力
@@ -26,40 +32,46 @@ class tip_toast(QWidget):
         super().__init__()
         uic.loadUi("widget-toast-bar.ui", self)
 
-        self.setWindowFlags(Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint | Qt.WindowType.Tool)
+        self.setWindowFlags(
+            Qt.WindowType.FramelessWindowHint
+            | Qt.WindowType.WindowStaysOnTopHint
+            | Qt.WindowType.Tool
+        )
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
         self.move(pos[0], pos[1])
         self.resize(width, 125)
 
         # 标题
-        title = self.findChild(QPushButton, 'alert')
+        title = self.findChild(QPushButton, "alert")
 
         if state:
-            logger.info('上课铃声显示')
-            title.setText('  上课')
+            logger.info("上课铃声显示")
+            title.setText("  上课")
             playsound(attend_class, block=False)
             setThemeColor(attend_class_p_color)  # 主题色
         else:
-            logger.info('下课铃声显示')
-            title.setText('  下课')
+            logger.info("下课铃声显示")
+            title.setText("  下课")
             playsound(finish_class, block=False)
             setThemeColor(finish_class_p_color)
 
         # 设置样式表
         if state:
-            title.setStyleSheet('border: none; color: rgba(255, 255, 255, 255); font-weight: bold; border-radius: 8px; '
-                                'background-color: qlineargradient('
-                                'spread:pad, x1:0, y1:0, x2:1, y2:1,'
-                                ' stop:0 rgba(255, 200, 150, 255), stop:1 rgba(217, 147, 107, 255)'
-                                ');'
-                                )
+            title.setStyleSheet(
+                "border: none; color: rgba(255, 255, 255, 255); font-weight: bold; border-radius: 8px; "
+                "background-color: qlineargradient("
+                "spread:pad, x1:0, y1:0, x2:1, y2:1,"
+                " stop:0 rgba(255, 200, 150, 255), stop:1 rgba(217, 147, 107, 255)"
+                ");"
+            )
         else:
-            title.setStyleSheet('border: none; color: rgba(255, 255, 255, 255); font-weight: bold; border-radius: 8px; '
-                                'background-color: qlineargradient('
-                                'spread:pad, x1:0, y1:0, x2:1, y2:1,'
-                                ' stop:0 rgba(166, 200, 140, 255), stop:1 rgba(107, 217, 170, 255)'
-                                ');'
-                                )
+            title.setStyleSheet(
+                "border: none; color: rgba(255, 255, 255, 255); font-weight: bold; border-radius: 8px; "
+                "background-color: qlineargradient("
+                "spread:pad, x1:0, y1:0, x2:1, y2:1,"
+                " stop:0 rgba(166, 200, 140, 255), stop:1 rgba(107, 217, 170, 255)"
+                ");"
+            )
         # 设置窗口初始大小
         mini_size_x = 120
         mini_size_y = 20
@@ -73,8 +85,12 @@ class tip_toast(QWidget):
         self.geometry_animation = QPropertyAnimation(self, b"geometry")
         self.geometry_animation.setDuration(350)  # 动画持续时间
         self.geometry_animation.setStartValue(
-            QRect(int(start_x + mini_size_x / 2), int(start_y + mini_size_y / 2),
-                  total_width - mini_size_x, 125 - mini_size_y)
+            QRect(
+                int(start_x + mini_size_x / 2),
+                int(start_y + mini_size_y / 2),
+                total_width - mini_size_x,
+                125 - mini_size_y,
+            )
         )
         self.geometry_animation.setEndValue(QRect(start_x, start_y, total_width, 125))
         self.geometry_animation.setEasingCurve(QEasingCurve.Type.InOutCirc)
@@ -99,10 +115,17 @@ class tip_toast(QWidget):
         # 放大效果
         self.geometry_animation_close = QPropertyAnimation(self, b"geometry")
         self.geometry_animation_close.setDuration(350)  # 动画持续时间
-        self.geometry_animation_close.setStartValue(QRect(start_x, start_y, total_width, 125))
+        self.geometry_animation_close.setStartValue(
+            QRect(start_x, start_y, total_width, 125)
+        )
         self.geometry_animation_close.setEndValue(
-            QRect(int(start_x + mini_size_x / 2), int(start_y + mini_size_y / 2),
-                  total_width - mini_size_x, 125 - mini_size_y))
+            QRect(
+                int(start_x + mini_size_x / 2),
+                int(start_y + mini_size_y / 2),
+                total_width - mini_size_x,
+                125 - mini_size_y,
+            )
+        )
         self.geometry_animation_close.setEasingCurve(QEasingCurve.Type.InOutCirc)
 
         self.opacity_animation_close = QPropertyAnimation(self, b"windowOpacity")
@@ -121,15 +144,17 @@ class tip_toast(QWidget):
 def main(state=1):
     global start_x, start_y, total_width
 
-    if conf.read_conf('General', 'enable_toast') == '1':
+    if conf.read_conf("General", "enable_toast") == "1":
         screen_geometry = QApplication.primaryScreen().geometry()
         screen_width = screen_geometry.width()
         spacing = -5
         widgets = list.get_widget_config()
-        total_width = total_width = sum((list.widget_width[key] for key in widgets), spacing * (len(widgets) - 1))
+        total_width = total_width = sum(
+            (list.widget_width[key] for key in widgets), spacing * (len(widgets) - 1)
+        )
 
         start_x = int((screen_width - total_width) / 2)
-        start_y = int(conf.read_conf('General', 'margin'))
+        start_y = int(conf.read_conf("General", "margin"))
 
         window = tip_toast((start_x, start_y), total_width, state)
         window.show()
@@ -138,7 +163,7 @@ def main(state=1):
         return
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app = QApplication(sys.argv)
     main(0)
     sys.exit(app.exec())
