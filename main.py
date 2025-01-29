@@ -1139,7 +1139,7 @@ class DesktopWidget(QWidget):  # 主要小组件
             self.themeListener = SystemThemeListener(self)
             # 启动监听器
             self.themeListener.start()
-            
+
             self.init_tray_menu()  # 初始化托盘菜单
 
         # 样式
@@ -1228,6 +1228,7 @@ class DesktopWidget(QWidget):  # 主要小组件
             desc.setText(context[1])
         except Exception as e:
             logger.error(f"更新插件小组件时出错：{e}")
+
 
     def init_ui(self, path):
         if conf.load_theme_config(theme)['support_dark_mode']:

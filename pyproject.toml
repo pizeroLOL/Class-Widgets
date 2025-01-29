@@ -1,0 +1,38 @@
+[project]
+name = "class-widgets"
+version = "0.1.0"
+description = "Class Widgets 是一款能够显示当前课程的桌面组件应用程序。其提供了易用课程表编辑和美观的桌面组件。 "
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    # "loguru>=0.7.3",
+    # "pygame>=2.6.1",
+    # "pyqt-fluent-widgets[full]>=1.7.4",
+    # "pyqt5>=5.15.11",
+    # "requests>=2.32.3",
+    "loguru>=0.7.3",
+    # "loguru>=0.7.3",
+    # "pygame>=2.6.1",
+    # "pyqt-fluent-widgets[full]>=1.7.4",
+    # "pyqt5>=5.15.11",
+    # "requests>=2.32.3",
+    "pygame>=2.6.1",
+    "pyqt-fluent-widgets[full]>=1.7.4",
+    # "loguru>=0.7.3",
+    # "pygame>=2.6.1",
+    # "pyqt-fluent-widgets[full]>=1.7.4",
+    # "pyqt5>=5.15.11",
+    # "requests>=2.32.3",
+    "pyqt5>=5.15.11",
+    "requests>=2.32.3",
+]
+
+[project.scripts]
+class-widgets = "class_widgets.main:hi"
+
+[build-system]
+requires = ["hatchling", "setuptools>=65.0"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel.force-include]
+"." = "class_widgets"
