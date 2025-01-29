@@ -1124,7 +1124,7 @@ class DesktopWidget(QWidget):  # 主要小组件
             self.themeListener = SystemThemeListener(self)
             # 启动监听器
             self.themeListener.start()
-            
+
             self.init_tray_menu()  # 初始化托盘菜单
 
         # 样式
@@ -1220,7 +1220,7 @@ class DesktopWidget(QWidget):  # 主要小组件
                 return
             if platform.system() == 'Windows' and platform.release() < '10':
                 return
-            
+
             setTheme(Theme.AUTO)
         elif conf.read_conf('General', 'color_mode') == '1':
             setTheme(Theme.DARK)
