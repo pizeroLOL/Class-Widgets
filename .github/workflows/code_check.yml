@@ -3,6 +3,9 @@ name: Python Syntax Check
 on:
   pull_request_target:
     types: [opened, synchronize]
+  push:
+    branches:
+      - test/fix-pyright
 
 concurrency:
   group: code-quality-${{ github.ref }}
