@@ -275,7 +275,7 @@ class PluginSettingsDialog(MessageBoxBase):  # 插件设置对话框
     def __init__(self, plugin_dir=None, parent=None):
         if plugin_dir not in p_loader.plugins_settings:
             return
-            
+
         super().__init__(parent)
         self.plugin_widget = None
         self.plugin_dir = plugin_dir
@@ -346,7 +346,7 @@ class PluginCard(CardWidget):  # 插件卡片
 
         plugin_config = conf.load_plugin_config()
         is_temp_disabled = plugin_dir in plugin_config.get('temp_disabled_plugins', [])
-        
+
         if plugin_dir in enabled_plugins['enabled_plugins']:  # 插件是否启用
             self.enableButton.setChecked(True)
             if enable_settings and plugin_dir in p_loader.plugins_settings:
@@ -584,11 +584,11 @@ class TTSPreviewThread(QThread):
             if self.isInterruptionRequested():
                 logger.info("TTS预览线程收到中断请求，正在退出...")
                 return
-                
+
             from generate_speech import generate_speech_sync, TTSEngine
             from play_audio import play_audio
             import os
-            
+
             logger.info(f"使用引擎 {self.engine} 生成预览语音")
             audio_file = generate_speech_sync(
                 text=self.text,
@@ -597,18 +597,18 @@ class TTSPreviewThread(QThread):
                 auto_fallback=True,
                 timeout=10.0
             )
-            
+
             # 再次检查是否有中断请求
             if self.isInterruptionRequested():
                 logger.info("TTS预览线程收到中断请求，正在退出...")
                 # 删除已生成的音频文件
                 TTSEngine.delete_audio_file(audio_file)
                 return
-            
+
             # 检查文件是否存在且有效
             if not os.path.exists(audio_file):
                 raise FileNotFoundError(f"生成的音频文件不存在: {audio_file}")
-                
+
             # 检查文件大小是否正常（小于10字节的文件可能是损坏的）
             file_size = os.path.getsize(audio_file)
             if file_size < 10:
@@ -616,7 +616,7 @@ class TTSPreviewThread(QThread):
                 # 删除可能损坏的文件
                 TTSEngine.delete_audio_file(audio_file)
                 raise ValueError(f"生成的音频文件可能无效，大小仅为 {file_size} 字节")
-                
+
             play_audio(audio_file, tts_delete_after=True)
             self.previewFinished.emit(True)
         except Exception as e:
@@ -742,7 +742,7 @@ class SettingsMenu(FluentWindow):
         container_widget = self.plugin_card_layout.parentWidget()
         if container_widget:
             container_widget.setUpdatesEnabled(False)
-        
+
         for plugin in plugin_dict:
             if (Path(conf.PLUGINS_DIR) / plugin / 'icon.png').exists():  # 若插件目录存在icon.png
                 icon_path = f'{base_directory}/plugins/{plugin}/icon.png'
@@ -768,7 +768,7 @@ class SettingsMenu(FluentWindow):
             self.tips_plugin_empty.show()
         if container_widget:
             container_widget.setUpdatesEnabled(True)
-    
+
     def clear_plugin_cards(self):
         """清空插件卡片"""
         container_widget = self.plugin_card_layout.parentWidget()
@@ -781,18 +781,18 @@ class SettingsMenu(FluentWindow):
         self.all_plugin_cards.clear()
         if container_widget:
             container_widget.setUpdatesEnabled(True)
-    
+
     def update_plugin_count(self):
         """更新计数显示"""
         total_count = len(plugin_dict)
         enabled_count = len([p for p in plugin_dict if plugin_dict[p]['name'] in enabled_plugins])
         self.plugin_count_label.setText(f'已安装 {total_count} 个插件，已启用 {enabled_count} 个')
-    
+
     def filter_plugins(self):
         """根据搜索条件和过滤器过滤插件"""
         search_text = self.plugin_search.text().lower()
         filter_type = self.filter_combo.currentText()
-        
+
         visible_count = 0
         valid_cards = []
         for card in self.all_plugin_cards:
@@ -802,7 +802,7 @@ class SettingsMenu(FluentWindow):
             except RuntimeError:
                 continue
         self.all_plugin_cards = valid_cards
-        
+
         for card in self.all_plugin_cards:
             should_show = True
             if search_text:
@@ -830,7 +830,7 @@ class SettingsMenu(FluentWindow):
             self.tips_plugin_empty.show()
         else:
             self.tips_plugin_empty.hide()
-    
+
     def refresh_plugin_list(self):
         """刷新插件列表"""
         global plugin_dict, enabled_plugins
@@ -848,13 +848,13 @@ class SettingsMenu(FluentWindow):
             duration=3000,
             parent=self.window()
         )
-    
+
     def import_plugin_from_file(self):
         """从文件导入插件"""
         file_path, _ = QFileDialog.getOpenFileName(
-            self, 
-            '选择插件文件', 
-            '', 
+            self,
+            '选择插件文件',
+            '',
             'ZIP文件 (*.zip);;JSON配置文件 (*.json);;所有文件 (*)'
         )
         if not file_path:
@@ -864,11 +864,11 @@ class SettingsMenu(FluentWindow):
                 self._import_from_plugin_json(file_path)
             else:
                 self._import_from_zip(file_path)
-                
+
         except Exception as e:
             logger.error(f"插件导入失败 - 未知错误: {file_path}, 错误类型: {type(e).__name__}, 错误详情: {str(e)}")
             self._show_error_dialog(f'导入插件时发生错误：{str(e)}')
-    
+
     def _import_from_plugin_json(self, json_file_path):
         try:
             with open(json_file_path, 'r', encoding='utf-8') as f:
@@ -879,8 +879,8 @@ class SettingsMenu(FluentWindow):
             target_dir = os.path.join(base_directory, conf.PLUGINS_DIR, plugin_dir_name)
             if os.path.exists(target_dir):
                 reply = MessageBox(
-                    '插件已存在', 
-                    f'插件 "{plugin_name}" 已存在，是否覆盖？', 
+                    '插件已存在',
+                    f'插件 "{plugin_name}" 已存在，是否覆盖？',
                     self
                 ).exec_()
                 if reply != MessageBox.Yes:
@@ -889,21 +889,21 @@ class SettingsMenu(FluentWindow):
             shutil.copytree(source_dir, target_dir)
             self.refresh_plugin_list()
             w = MessageBox(
-                '导入成功', 
-                f'插件 "{plugin_name}" 导入成功！\n重启应用后生效。', 
+                '导入成功',
+                f'插件 "{plugin_name}" 导入成功！\n重启应用后生效。',
                 self
             )
             w.yesButton.setText('好')
             w.cancelButton.hide()
             w.exec_()
-            
+
         except json.JSONDecodeError as e:
             logger.error(f"插件导入失败 - JSON配置文件格式错误: {json_file_path}, 错误详情: {str(e)}")
             self._show_error_dialog('插件配置文件格式错误')
         except Exception as e:
             logger.error(f"插件导入失败 - 文件夹复制错误: {json_file_path}, 错误详情: {str(e)}")
             self._show_error_dialog(f'复制插件文件夹时发生错误：{str(e)}')
-    
+
     def _import_from_zip(self, zip_file_path):
         try:
             with zipfile.ZipFile(zip_file_path, 'r') as zip_ref:
@@ -917,8 +917,8 @@ class SettingsMenu(FluentWindow):
                 target_dir = os.path.join(base_directory, conf.PLUGINS_DIR, plugin_dir_name)
                 if os.path.exists(target_dir):
                     reply = MessageBox(
-                        '插件已存在', 
-                        f'插件 "{plugin_name}" 已存在，是否覆盖？', 
+                        '插件已存在',
+                        f'插件 "{plugin_name}" 已存在，是否覆盖？',
                         self
                     ).exec_()
                     if reply != MessageBox.Yes:
@@ -927,14 +927,14 @@ class SettingsMenu(FluentWindow):
                 zip_ref.extractall(target_dir)
                 self.refresh_plugin_list()
                 w = MessageBox(
-                    '导入成功', 
-                    f'插件 "{plugin_name}" 导入成功！\n重启应用后生效。', 
+                    '导入成功',
+                    f'插件 "{plugin_name}" 导入成功！\n重启应用后生效。',
                     self
                 )
                 w.yesButton.setText('好')
                 w.cancelButton.hide()
                 w.exec_()
-                
+
         except zipfile.BadZipFile as e:
             logger.error(f"插件导入失败 - 无效的ZIP文件: {zip_file_path}, 错误详情: {str(e)}")
             self._show_error_dialog('无效的ZIP文件')
@@ -1165,13 +1165,13 @@ class SettingsMenu(FluentWindow):
                 text_to_speak = text_template.format_map(format_values)
 
             logger.debug(f"生成TTS文本: {text_to_speak}")
-            
+
             try:
                 current_engine = self.parent_menu.engine_selector.currentData()
                 current_voice = None
                 if self.parent_menu.voice_selector and self.parent_menu.voice_selector.currentData():
                     current_voice = self.parent_menu.voice_selector.currentData()
-                
+
                 if hasattr(self, 'tts_preview_thread') and self.tts_preview_thread and self.tts_preview_thread.isRunning():
                     self.tts_preview_thread.requestInterruption()
                     self.tts_preview_thread.quit()
@@ -1183,10 +1183,10 @@ class SettingsMenu(FluentWindow):
                     voice=current_voice,
                     parent=self
                 )
-                
+
                 self.tts_preview_thread.previewError.connect(self.handle_tts_preview_error)
                 self.tts_preview_thread.start()
-                
+
             except Exception as e:
                 logger.error(f"启动TTS预览线程失败: {str(e)}")
                 from qfluentwidgets import MessageBox
@@ -1195,7 +1195,7 @@ class SettingsMenu(FluentWindow):
                     f"启动TTS预览时出错: {str(e)}",
                     self
                 ).exec()
-                
+
         def handle_tts_preview_error(self, error_message):
             logger.error(f"TTS生成预览失败: {error_message}")
             from qfluentwidgets import MessageBox
@@ -1281,7 +1281,7 @@ class SettingsMenu(FluentWindow):
             if engine_key == 'pyttsx3' and platform.system() != "Windows":
                 continue
             self.engine_selector.addItem(engine_name, userData=engine_key)
-        
+
         current_engine = config_center.read_conf('TTS', 'engine')
         if current_engine in available_engines:
             if current_engine == 'pyttsx3' and platform.system() != "Windows":
@@ -1322,7 +1322,7 @@ class SettingsMenu(FluentWindow):
                     self.titleLabel = StrongBodyLabel(title, self)
                     self.contentLabel = BodyLabel(
                         "系统 TTS（pyttsx3）用的是系统自带的语音服务噢~\n"
-                        "您可以在系统设置里添加更多语音(*≧▽≦)", 
+                        "您可以在系统设置里添加更多语音(*≧▽≦)",
                         self)
                     self.hyperlinkLabel = HyperlinkLabel("打开Windows语音设置", self)
                     self.hyperlinkLabel.clicked.connect(self._open_settings)
@@ -1441,7 +1441,7 @@ class SettingsMenu(FluentWindow):
         if not self.voice_selector or not self.switch_enable_TTS:
             logger.warning("voice_selector 或 switch_enable_TTS 未初始化")
             return
-            
+
         voice_selector = self.voice_selector
         switch_enable_TTS = self.switch_enable_TTS
         voice_selector.clear()
@@ -1617,7 +1617,7 @@ class SettingsMenu(FluentWindow):
         if current_schedule in schedule_list:
             self.conf_combo.setCurrentIndex(schedule_list.index(current_schedule))
         else:
-            self.conf_combo.setCurrentIndex(0) 
+            self.conf_combo.setCurrentIndex(0)
         self.conf_combo.currentIndexChanged.connect(self.ad_change_file)  # 切换配置文件
 
         conf_name = self.adInterface.findChild(LineEdit, 'conf_name')
@@ -1730,13 +1730,13 @@ class SettingsMenu(FluentWindow):
         )  # 保存缩放系数
 
         what_is_hide_mode_3 = self.adInterface.findChild(HyperlinkLabel, 'what_is_hide_mode_3')
-  
+
         def what_is_hide_mode_3_clicked():
             w = MessageBox('灵活模式', '灵活模式为上课时自动隐藏，可手动改变隐藏状态，当前课程状态（上课/课间）改变后会清除手动隐藏状态，重新转为自动隐藏。', self)
             w.cancelButton.hide()
             w.exec()
         what_is_hide_mode_3.clicked.connect(what_is_hide_mode_3_clicked)
-        
+
     def setup_schedule_edit(self):
         se_load_item()
         se_set_button = self.findChild(ToolButton, 'set_button')
