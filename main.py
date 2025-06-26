@@ -136,7 +136,7 @@ def handle_dark_mode_change(is_dark: bool) -> None:
         logger.info(f"系统颜色模式更新: {'深色' if is_dark else '浅色'}")
         current_theme = Theme.DARK if is_dark else Theme.LIGHT
         setTheme(current_theme)
-        if mgr: 
+        if mgr:
             mgr.clear_widgets()
         else:
             logger.warning("主题更改时,mgr还未初始化")
@@ -160,11 +160,11 @@ def setTheme_() -> None:  # 设置主题
                 return
             # 检查Windows版本是否支持深色模式（Windows 10 build 14393及以上）
             try:
-                win_build = sys.getwindowsversion().build 
-                if win_build < 14393:  # 不支持深色模式的最低版本 
-                    return 
+                win_build = sys.getwindowsversion().build
+                if win_build < 14393:  # 不支持深色模式的最低版本
+                    return
             except AttributeError:
-                # 无法获取版本信息，保守返回 
+                # 无法获取版本信息，保守返回
                 return
         if platform.system() == 'Linux':
             return
@@ -250,7 +250,7 @@ def get_start_time() -> None:
                 # 如果转换失败，返回原始字符串
                 return item_name
         return item_name
-    
+
     # 对timeline排序后添加到timeline_data
     sorted_timeline = sorted(timeline.items(), key=sort_timeline_key)
     for item_name, item_time in sorted_timeline:
@@ -291,7 +291,7 @@ def get_excluded_lessons() -> None:
     global excluded_lessons
     if config_center.read_conf('General', 'excluded_lesson') == "0":
         excluded_lessons = []
-        return 
+        return
     excluded_lessons_raw = config_center.read_conf('General', 'excluded_lessons')
     excluded_lessons = excluded_lessons_raw.split(',') if excluded_lessons_raw != '' else []
 
@@ -460,7 +460,7 @@ def get_next_lessons() -> None:
                     c_time += dt.timedelta(minutes=add_time)
 
 
-def get_next_lessons_text() -> str: 
+def get_next_lessons_text() -> str:
     MAX_DISPLAY_LENGTH = 16
     if not next_lessons:
         return '当前暂无课程'
@@ -596,7 +596,7 @@ class ErrorDialog(Dialog):  # 重大错误提示框
         # KeyboardInterrupt 直接 exit
         if error_details.endswith('KeyboardInterrupt') or error_details.endswith('KeyboardInterrupt\n'):
             stop()
-        
+
         super().__init__(
             'Class Widgets 崩溃报告',
             '抱歉！Class Widgets 发生了严重的错误从而无法正常运行。您可以保存下方的错误信息并向他人求助。'
@@ -710,7 +710,7 @@ class PluginManager:  # 插件管理器
             "Current_Lessons": current_lessons,  # 当前课程
             "Current_Week": current_week,  # 当前周次
             "Excluded_Lessons": excluded_lessons,  # 排除的课程
-            
+
             "Current_Time": current_time,  # 当前时间
             "Timeline_Data": timeline_data,  # 时间线数据
             "Parts_Start_Time": parts_start_time,  # 节点开始时间
@@ -1281,7 +1281,7 @@ class FloatingWidget(QWidget):  # 浮窗
                         pass
                     self._is_topmost_callback_added = False
                     logger.debug(f"因错误 {e} 移除浮窗置顶回调。")
-    
+
     def save_position(self):
         current_screen = QApplication.screenAt(self.pos())
         if not current_screen:
@@ -1422,7 +1422,7 @@ class FloatingWidget(QWidget):  # 浮窗
         logger.info('显示浮窗')
         current_screen = QApplication.screenAt(self.pos()) or QApplication.primaryScreen()
         screen_geometry = current_screen.availableGeometry()
-        
+
         if self.position:
             if self.position.y() > screen_geometry.center().y():
                 # 下半屏
@@ -1457,7 +1457,7 @@ class FloatingWidget(QWidget):  # 浮窗
         self.animation_rect.setDuration(600)
         self.animation_rect.setStartValue(QRect(start_pos, self.size()))
         self.animation_rect.setEndValue(QRect(self.position, self.size()))
-        
+
         if platform.system() == 'Darwin':
             self.animation_rect.setEasingCurve(QEasingCurve.Type.OutQuad)
         elif platform.system() == 'Windows':
@@ -1505,7 +1505,7 @@ class FloatingWidget(QWidget):  # 浮窗
                 # 任务栏补偿
                 if platform.system() == "Windows":
                     target_y += 30
-                
+
                 target_pos = QPoint(
                     main_widget.x(),
                     target_y
@@ -1520,7 +1520,7 @@ class FloatingWidget(QWidget):  # 浮窗
                 int(config_center.read_conf('General', 'margin'))
             )
             distance = abs(current_pos.y() - target_pos.y())
-        
+
         max_distance = screen_geometry.height()
         distance_ratio = min(distance / max_distance, 1.0)
         duration = int(base_duration + (max_duration - base_duration) * (distance_ratio ** 0.7))
@@ -1537,22 +1537,22 @@ class FloatingWidget(QWidget):  # 浮窗
             curve = QEasingCurve.Type.InOutQuad
         elif platform.system() == "Darwin":
             curve = QEasingCurve.Type.InOutQuad # macOS 也用这个吧
-        
+
         self.animation = QPropertyAnimation(self, b"windowOpacity")
         self.animation.setDuration(int(duration * 1.15))
         self.animation.setStartValue(self.windowOpacity())
         self.animation.setEndValue(0.0)
-        
+
         self.animation_rect = QPropertyAnimation(self, b"geometry")
         self.animation_rect.setDuration(duration)
         self.animation_rect.setStartValue(self.geometry())
         self.animation_rect.setEndValue(QRect(target_pos, self.size()))
         self.animation_rect.setEasingCurve(curve)
-        
+
         self.animating = True
         self.animation.start()
         self.animation_rect.start()
-        
+
         def cleanup():
             self.hide()
             self.save_position()
@@ -1563,7 +1563,7 @@ class FloatingWidget(QWidget):  # 浮窗
                 except ValueError:
                     pass
                 self._is_topmost_callback_added = False
-            
+
         self.animation_rect.finished.connect(cleanup)
 
     def hideEvent(self, event: QHideEvent) -> None:
@@ -1622,7 +1622,7 @@ class FloatingWidget(QWidget):  # 浮窗
                 else:
                     mgr.show_windows()
                     mgr.hide_status = (current_state, 0)
-            elif hide_mode == '0': 
+            elif hide_mode == '0':
                 mgr.show_windows()
                 self.close()
 
@@ -1754,7 +1754,7 @@ class DesktopWidget(QWidget):  # 主要小组件
             self.alert_icon_animation = QPropertyAnimation(self.alert_icon_opacity, b"opacity")
             self.alert_icon_animation.setDuration(700)
             self.alert_icon_animation.setEasingCurve(QEasingCurve.OutCubic)
-            
+
             self.showing_temperature = True  # 跟踪状态(预警/气温)
 
             self.weather_timer = QTimer(self)
@@ -1959,7 +1959,7 @@ class DesktopWidget(QWidget):  # 主要小组件
     def animate_expand(self, target_geometry: QRect) -> None:
         self.animation = QPropertyAnimation(self, b"geometry")
         self.animation.setDuration(400)
-        self.animation.setStartValue(QRect(target_geometry.x(), -self.height(), 
+        self.animation.setStartValue(QRect(target_geometry.x(), -self.height(),
                                           self.width(), self.height()))
         self.animation.setEndValue(target_geometry)
         self.animation.setEasingCurve(QEasingCurve.Type.OutBack)
@@ -2007,7 +2007,7 @@ class DesktopWidget(QWidget):  # 主要小组件
                 else:
                     mgr.show_windows()
                     mgr.hide_status = (current_state, 0)
-                
+
 
 
     def rightReleaseEvent(self, event: QMouseEvent) -> None:  # 右键事件
@@ -2044,13 +2044,13 @@ class DesktopWidget(QWidget):  # 主要小组件
             else:
                 mgr.show_windows()
 
-            
+
 
         if conf.is_temp_week():  # 调休日
             current_week = config_center.read_conf('Temp', 'set_week')
         else:
             current_week = dt.datetime.now().weekday()
-        
+
         cd_list = get_countdown()
 
         if path == 'widget-time.ui':  # 日期显示
@@ -2124,7 +2124,7 @@ class DesktopWidget(QWidget):  # 主要小组件
         if self.showing_temperature:
             self._fade_to_alert()
         else:
-            if (hasattr(self, 'current_alerts') and self.current_alerts and 
+            if (hasattr(self, 'current_alerts') and self.current_alerts and
                 len(self.current_alerts) > 1 and hasattr(self, 'current_alert_index')):
                 self.current_alert_index += 1
                 if self.current_alert_index >= len(self.current_alerts):
@@ -2134,7 +2134,7 @@ class DesktopWidget(QWidget):  # 主要小组件
                     self._cycle_to_next_alert_with_animation()
             else:
                 self._fade_to_temperature()
-    
+
     def _fade_to_alert(self) -> None:
         """从温度渐变到预警显示"""
         self.weather_opacity = QGraphicsOpacityEffect(self.weather_icon)
@@ -2160,7 +2160,7 @@ class DesktopWidget(QWidget):  # 主要小组件
         if not hasattr(self, 'alert_icon_opacity') or not self.alert_icon_opacity:
             self.alert_icon_opacity = QGraphicsOpacityEffect(self.alert_icon)
             self.alert_icon.setGraphicsEffect(self.alert_icon_opacity)
-        
+
         def _start_alert_fade_in():
             self._display_current_alert()
             alert_text_fade_in = QPropertyAnimation(self.weather_alert_opacity, b'opacity')
@@ -2185,14 +2185,14 @@ class DesktopWidget(QWidget):  # 主要小组件
             self.fade_in_group.start()
             if hasattr(self, 'weather_info_timer'):
                 self.weather_info_timer.start(3000)
-        try: 
+        try:
             self.fade_out_group.finished.disconnect()
-        except TypeError: 
+        except TypeError:
             pass
         self.fade_out_group.finished.connect(_start_alert_fade_in)
         self.fade_out_group.start()
         self.showing_temperature = False
-    
+
     def _fade_to_temperature(self) -> None:
         """从预警渐变到温度显示"""
         if not hasattr(self, 'weather_alert_opacity') or not self.weather_alert_opacity:
@@ -2242,14 +2242,14 @@ class DesktopWidget(QWidget):  # 主要小组件
             self.weather_icon.show()
             self.temperature.show()
             self.fade_in_group.start()
-        try: 
+        try:
             self.fade_out_group.finished.disconnect()
-        except TypeError: 
+        except TypeError:
             pass
         self.fade_out_group.finished.connect(_start_temperature_fade_in)
         self.fade_out_group.start()
         self.showing_temperature = True
-    
+
     def _cycle_to_next_alert_with_animation(self) -> None:
         """在预警之间切换的动画"""
         alert_text_fade_out = QPropertyAnimation(self.weather_alert_opacity, b'opacity')
@@ -2265,7 +2265,7 @@ class DesktopWidget(QWidget):  # 主要小组件
         self.fade_out_group = QParallelAnimationGroup(self)
         self.fade_out_group.addAnimation(alert_text_fade_out)
         self.fade_out_group.addAnimation(alert_icon_fade_out)
-        
+
         def _switch_and_fade_in():
             self._display_current_alert()
             alert_text_fade_in = QPropertyAnimation(self.weather_alert_opacity, b'opacity')
@@ -2284,13 +2284,13 @@ class DesktopWidget(QWidget):  # 主要小组件
             self.fade_in_group.start()
             if hasattr(self, 'weather_info_timer'):
                 self.weather_info_timer.start(3000)
-        try: 
+        try:
             self.fade_out_group.finished.disconnect()
-        except TypeError: 
+        except TypeError:
             pass
         self.fade_out_group.finished.connect(_switch_and_fade_in)
         self.fade_out_group.start()
-    
+
     def _display_current_alert(self) -> None:
         """显示当前索引的预警信息"""
         if not hasattr(self, 'current_alerts') or not self.current_alerts:
@@ -2316,7 +2316,7 @@ class DesktopWidget(QWidget):  # 主要小组件
             icon_path = self._get_alert_icon_by_severity(severity)
             if icon_path:
                 self.alert_icon.setIcon(QIcon(icon_path))
-    
+
     def _simplify_alert_text(self, text: str) -> str:
         """简化预警文本"""
         if not text:
@@ -2330,7 +2330,7 @@ class DesktopWidget(QWidget):  # 主要小组件
         """根据预警等级获取对应图标"""
         severity_color_map = {
             '1': 'blue',
-            '2': 'yellow', 
+            '2': 'yellow',
             '3': 'orange',
             '4': 'red'
         }
@@ -2437,7 +2437,7 @@ class DesktopWidget(QWidget):  # 主要小组件
                 logger.error(f'天气组件出错：{e}')
         else:
             logger.error(f'获取天气数据出错：{weather_data}')
-            try: 
+            try:
                 if hasattr(self, 'weather_icon'):
                     self.weather_icon.setPixmap(QPixmap(f'{base_directory}/img/weather/99.svg'))
                     self.alert_icon.hide()
@@ -2683,7 +2683,7 @@ def check_windows_maximize() -> bool:  # 检查窗口是否最大化
     ignored_process_names_for_maximize_lower = {
         'easinote.exe'
     }
-    
+
     current_pid = os.getpid()
 
     try:
@@ -2716,7 +2716,7 @@ def check_windows_maximize() -> bool:  # 检查窗口是否最大化
             except (psutil.NoSuchProcess, psutil.AccessDenied, AttributeError, ValueError, OSError) :
                 # logger.debug(f"无法获取窗口 '{title}' 的进程信息,跳过.")
                 continue
-            
+
             if win_pid == current_pid:
                 # logger.debug(f"窗口 '{title}' (PID: {win_pid}, 进程: {process_name}) 是自身进程, 排除.")
                 continue
@@ -2731,7 +2731,7 @@ def check_windows_maximize() -> bool:  # 检查窗口是否最大化
             if process_name in excluded_process_names_lower:
                 # logger.debug(f"窗口 '{title}' (进程: {process_name}) 在排除的进程名列表, 排除.")
                 continue
-            
+
             if title_lower in excluded_titles_exact_lower:
                 # logger.debug(f"窗口标题 '{title_lower}' 在排除列表, 排除.")
                 continue
@@ -2739,7 +2739,7 @@ def check_windows_maximize() -> bool:  # 检查窗口是否最大化
             if any(keyword in title_lower for keyword in excluded_keywords_in_title_lower):
                 # logger.debug(f"窗口标题 '{title_lower}' 包含排除的关键词, 排除.")
                 continue
-            
+
             # 如果进程是 explorer.exe,但不是“资源管理器”则认为是特殊explorer(应该是桌面)
             if process_name == 'explorer.exe':
                 if title_lower in excluded_titles_exact_lower or \
