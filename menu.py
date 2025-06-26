@@ -11,6 +11,7 @@ import zipfile
 import shutil
 import asyncio
 
+print(1,1)
 from PyQt5 import uic, QtCore
 from PyQt5.QtCore import Qt, QTime, QUrl, QDate, pyqtSignal, QThread
 from PyQt5.QtGui import QIcon, QDesktopServices, QColor
