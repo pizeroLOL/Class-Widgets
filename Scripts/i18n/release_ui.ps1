@@ -2,7 +2,7 @@
 $lreleasePath = "lrelease"
 
 # 遍历 ./ui 下所有主题文件夹
-$themeFolders = Get-ChildItem -Path ./ui -Directory
+$themeFolders = Get-ChildItem -Path ./class-widgets/ui -Directory
 foreach ($themeFolder in $themeFolders) {
     $i18nDir = Join-Path $themeFolder.FullName 'i18n'
     if (Test-Path $i18nDir) {

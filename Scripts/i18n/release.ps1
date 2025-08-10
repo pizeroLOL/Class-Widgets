@@ -2,7 +2,7 @@
 $lreleasePath = "lrelease"
 
 # 查找 ./i18n 目录下所有 .ts 文件
-$tsFiles = Get-ChildItem -Path ./i18n -Filter *.ts -File -Recurse
+$tsFiles = Get-ChildItem -Path ./class-widgets/i18n -Filter *.ts -File -Recurse
 
 foreach ($ts in $tsFiles) {
     $qm = [System.IO.Path]::ChangeExtension($ts.FullName, '.qm')

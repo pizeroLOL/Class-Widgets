@@ -10,7 +10,7 @@ Class Widgets *1* は現在、完全にコミュニティ開発者によって�
 > コミュニティ開発者のサポートが必要な場合は、プロジェクトの QQ グループに参加するか、 GitHub で Issue を作成してください。
 
 <p align="center">
-  <img width="16%" align="center" src="../../img/Logo.png" alt="logo">
+  <img width="16%" align="center" src="../../class_widgets/img/Logo.png" alt="logo">
 </p>
 <h1 align="center">
   Class Widgets
@@ -29,7 +29,7 @@ Class Widgets *1* は現在、完全にコミュニティ開発者によって�
 [![Translation Status](https://hosted.weblate.org/widget/class-widgets-1/view/svg-badge.svg)](https://hosted.weblate.org/engage/class-widgets-1/)
 [![Translation Status](https://hosted.weblate.org/widget/class-widgets-1/view/language-badge.svg)](https://hosted.weblate.org/engage/class-widgets-1/)
 
-![Banner](../../img/Banner.png)
+![Banner](../../class_widgets/img/Banner.png)
 
 [![QQ Group](https://img.shields.io/badge/QQ%20%E7%BE%A41-169200380-blue.svg?logo=qq&color=blue&style=for-the-badge)](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=yHXKCAjOxlpTpJ4mNdXm0mxOneYUinRs&authKey=sd3%2F06iGdOZUjkXXPBeIzGnFDIeYwmdwuM8dhk25fi%2B1CUL32MkeN2EEfjdo2pzE&noverify=0&group_code=169200380)
 [![QQ Group](https://img.shields.io/badge/QQ%20%E7%BE%A42-698599898-blue.svg?logo=qq&color=blue&style=for-the-badge)](https://qm.qq.com/cgi-bin/qm/qr?k=3-1TBqjCldwth3o7-1yKCk3BKf4Itx3l&jump_from=webapi&authKey=uM+79Af69GR/pbu7GQpE18/mtBUl2bEQCFsPHcAJUUlG+NFFq78MBGTK3IkZKYRL)
@@ -56,9 +56,9 @@ Class Widgets *1* は現在、完全にコミュニティ開発者によって�
 
 ## アプリケーションのスクリーンショット
 #### メイン画面（ライト）
-![scrshot_0](../../img/screenshot_0.png)
+![scrshot_0](../../class_widgets/img/screenshot_0.png)
 #### メイン画面（ダーク）
-![scrshot_0](../../img/screenshot_1.png)
+![scrshot_0](../../class_widgets/img/screenshot_1.png)
 
 ## インストールと使い方
 > [!TIP]

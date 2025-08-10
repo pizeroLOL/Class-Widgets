@@ -2,7 +2,7 @@
 $lupdatePath = "lupdate"
 
 # 遍历 ./ui 下所有主题文件夹
-$themeFolders = Get-ChildItem -Path ./ui -Directory
+$themeFolders = Get-ChildItem -Path ./class-widgets/ui -Directory
 foreach ($themeFolder in $themeFolders) {
     # 获取该主题文件夹下所有 .ui 文件
     $uiFiles = Get-ChildItem -Path $themeFolder.FullName -Filter *.ui -File -Recurse

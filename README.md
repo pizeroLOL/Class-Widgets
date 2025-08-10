@@ -10,7 +10,7 @@
 > 有任何需要社区开发者帮忙的地方，请前往 QQ 群或提 issue
 
 <p align="center">
-  <img width="16%" align="center" src="img/Logo.png" alt="logo">
+  <img width="16%" align="center" src="class_widgets/img/Logo.png" alt="logo">
 </p>
   <h1 align="center">
   Class Widgets
@@ -34,7 +34,7 @@
 
 
 
-![Banner](img/Banner.png)
+![Banner](class_widgets/img/Banner.png)
 
 [![Q群](https://img.shields.io/badge/QQ%20群1-169200380-blue.svg?logo=qq&color=blue&style=for-the-badge)](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=yHXKCAjOxlpTpJ4mNdXm0mxOneYUinRs&authKey=sd3%2F06iGdOZUjkXXPBeIzGnFDIeYwmdwuM8dhk25fi%2B1CUL32MkeN2EEfjdo2pzE&noverify=0&group_code=169200380)
 [![Q群](https://img.shields.io/badge/QQ%20群2-698599898-blue.svg?logo=qq&color=blue&style=for-the-badge)](https://qm.qq.com/cgi-bin/qm/qr?k=f3uyP-yI-0oEOwiHFTFjJo-aQpkoNaiX&jump_from=webapi&authKey=Ok+lW0D8TrjFwgP5WSOVxFM4s97thPk36WOmMKXSyroP8MDmDPS22bPqT/+6uMgN)
@@ -60,9 +60,9 @@
 
 ## 软件截图
 #### 主界面(亮色)
-![scrshot_0](img/screenshot_0.png)
+![scrshot_0](class_widgets/img/screenshot_0.png)
 #### 主界面(暗色)
-![scrshot_0](img/screenshot_1.png)
+![scrshot_0](class_widgets/img/screenshot_1.png)
 
 ## 安装&使用
 > [!TIP]
