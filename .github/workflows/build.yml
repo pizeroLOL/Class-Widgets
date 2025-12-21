@@ -584,7 +584,7 @@ jobs:
           cd dist && mv ClassWidgets "${zip_name}" && zip -r -q "../packages/${zip_name}.zip" "${zip_name}"/* && cd ..
 
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: ${{ matrix.platform }}-build
           path: ./packages
@@ -607,7 +607,7 @@ jobs:
       - name: Upload unsigned artifact (Windows)
         if: startsWith(matrix.os, 'windows') && env.IS_SIGNING == 'true'
         id: upload_unsigned
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: windows-${{ matrix.arch }}-exe-unsigned
           path: ./exe-for-signing
@@ -655,7 +655,7 @@ jobs:
 
       - name: Upload signed build package (Windows)
         if: startsWith(matrix.os, 'windows') && env.IS_SIGNING == 'true'
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: windows-${{ matrix.arch }}-build-signed
           path: packages/ClassWidgets-Windows-${{ matrix.arch }}-signed.zip
@@ -828,14 +828,14 @@ jobs:
           ls -la final-packages/ || true
 
       - name: Upload final packages
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: ClassWidgets-Packages
           path: final-packages
 
       - name: Upload provenance artifacts
         if: ${{ env.BUILD_TYPE == 'Release' && steps.generate-provenance.outputs.bundle-path != '' }}
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: provenance
           path: |
